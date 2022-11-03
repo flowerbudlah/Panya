@@ -55,6 +55,3 @@ commit;
 
 --추천버튼(좋아요기능)
 alter table product_table add likeButton int default 0; 
-
-
-

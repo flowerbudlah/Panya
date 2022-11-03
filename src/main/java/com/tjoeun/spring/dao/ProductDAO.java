@@ -47,7 +47,6 @@ public class ProductDAO {
 	//상품댓글 작성
 	public void write(ProductReplyDTO writeProductReplyDTO) {
 		sqlSessionTemplate.insert("product.replyWrite", writeProductReplyDTO); 
-		
 	}
 
 	//이 상품에 해당하는 댓글 목록 가져오기

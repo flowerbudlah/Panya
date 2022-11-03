@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tjoeun.spring.dto.ProductDTO;
 import com.tjoeun.spring.dto.ProductReplyDTO;
-import com.tjoeun.spring.dto.ReplyDTO;
+
 import com.tjoeun.spring.service.ProductService;
 
 
@@ -53,8 +53,7 @@ public class ProductController {
 		model.addAttribute("productDetail", productDetail);	
 		
 		//1). 해당 상품에 등록된 댓글 출력
-		List<ProductReplyDTO> productReply = null;
-		productReply = productService.replyList(product_idx);
+		List<ProductReplyDTO> productReply = productService.replyList(product_idx);
 		model.addAttribute("productReply", productReply);
 		
 		return "product/product_detail";
@@ -146,11 +145,5 @@ public class ProductController {
     }
 	
 	
-	
 
-	
-	
-	
-	
-		
 }

@@ -13,8 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tjoeun.spring.dao.ProductDAO;
 import com.tjoeun.spring.dto.ProductDTO;
 import com.tjoeun.spring.dto.ProductReplyDTO;
-import com.tjoeun.spring.dto.ReplyDTO;
-
 
 @Service
 @PropertySource("/WEB-INF/properties/option.properties")

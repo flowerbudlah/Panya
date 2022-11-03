@@ -183,11 +183,12 @@ ul{list-style:none;}
 </table>
 <!-- 추천기능 -->
 <br>
-<img src="${root }image/like.png" width=100px; ><br>
+<img src="${root }image/like.gif" width=100px; ><br>
 이 상품을 <strong>추천</strong>하시겠습니까? 
 <!-- 1. 댓글과 대댓글 -->
 <div class="container" style="margin-top:50px; margin-bottom:100px;">
 <hr/>
+
 <!-- 1) 상품 댓글 목록 불러오기 -->
 <div class="reply">
 	<ul>
@@ -197,16 +198,25 @@ ul{list-style:none;}
 			<input type="hidden" id="product_reply_idx" name="product_reply_idx" value="${productReply.product_reply_idx}"/>
 			<div class="reply_writer">작성자: ${productReply.product_replyer_name}</div>
 			<div class="reply_date">댓글 작성 일시: <fmt:formatDate value="${productReply.regdate}" pattern="yyyy-MM-dd(E) HH:mm:ss"/>
+				
+				
 				<!-- 댓글삭제버튼은 댓글작성자와 관리자만 볼 수 있게 처리 -->
 				<c:if test="${(loginMemberDTO.member_id eq productReply.product_replyer_id) || (loginMemberDTO.member_id eq 'admin')}">
 					<a href="javascript:void(0);" class="badge badge-pill badge-light" style="font-size:13px;" onclick="javascript:deleteProductReply();">
 						X
 					</a>
 				</c:if>
+				
+				
+				
 			</div>
 			<textarea id="product_reply_content" name="product_reply_content" class="form-control" rows="3" style="resize:none" disabled="disabled">${productReply.product_reply_content}</textarea>
 		</li>
 		<br>
+		
+		
+		
+		
 		<!-- 댓글에 대한 댓글도 로그인한 경우만 보이게 -->
 		<c:if test="${loginMemberDTO.memberLogin == true }">    
 			<div class="text-left">
@@ -220,6 +230,9 @@ ul{list-style:none;}
 		</c:if>
 	</c:forEach>
 	</ul>
+	
+	
+	
 </div>
 <!-- 로그인 한 회원에게만 상품 댓글 작성폼이 보이게 처리 -->
 <c:if test="${loginMemberDTO.memberLogin == true }">    

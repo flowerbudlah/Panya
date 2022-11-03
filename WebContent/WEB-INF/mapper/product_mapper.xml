@@ -51,7 +51,7 @@
 	<!-- 1) 댓글 목록 가져오기 -->
 	<select id="replyList" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.ProductReplyDTO">
 	 <![CDATA[
-		select product_idx, product_reply_idx, product_replyer_id, p.member_name product_replyer_name, product_reply_content, regdate
+		select product_idx, product_reply_idx, product_replyer_id, p.member_name as product_replyer_name, product_reply_content, regdate
 		from product_reply_table r, panya_member_table p
         where product_idx = #{product_idx} 
         and r.product_replyer_id = p.member_id 
