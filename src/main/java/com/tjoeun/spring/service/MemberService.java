@@ -64,11 +64,7 @@ public class MemberService {
 		}
 	}
 	
-	
-	
-	
 	public void getModifyMemberDTO(MemberDTO modifyMemberDTO) {
-		//�쉶�썝�젙蹂대�� �닔�젙�븯湲� �쐞�빐�꽌 �젙蹂댁닔�젙 �럹�씠吏�瑜� �닃���쓣�븣 db�뿉 �엳�뒗 �굹�쓽 �젙蹂� 媛��졇�삤�뒗寃� 
 		MemberDTO fromDBModifyMemberDTO = memberDAO.getModifyMemberDTO(loginMemberDTO.getMember_idx());
   	
 		modifyMemberDTO.setMember_id(fromDBModifyMemberDTO.getMember_id());

@@ -1,12 +1,14 @@
 package com.tjoeun.spring.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter @Setter
+
+@Data
 public class MemberDTO {
 	private int member_idx; 
 	
@@ -26,20 +28,16 @@ public class MemberDTO {
 	@Pattern(regexp = "[a-zA-Z0-9]*")
 	private String member_pw2; 
 	
-	
-	
-	
-	
 	private String member_email; 
 	
 	private String member_tel; 	
 	private String member_address; 	
-	private int postcode; //�슦�렪踰덊샇 
+	private int postcode; //우편번호
 	
 	private String question; 
 	private String answer; 
 	
-	private String registerDate; //媛��엯�씪
+	private Date registerDate; //가입일
 	
 	private boolean inputMemberID;
 	private boolean inputMemberEmail;
@@ -51,11 +49,8 @@ public class MemberDTO {
 		this.inputMemberEmail = false; 
 	}
 	
-	
-	
-	//愿�由ъ옄�럹�씠吏��뿉�꽌 寃��깋
-	private String keyword;//�궎�썙�뱶 
-	private String type; //寃��깋醫낅쪟
+	private String keyword;
+	private String type;
 	
 }
 

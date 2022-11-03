@@ -23,7 +23,7 @@
 <c:import url="/WEB-INF/view/include/top_menu.jsp" />
 
 <!-- 회원가입 폼 -->
-<div class="container" style="margin-top:100px; margin-bottom:100px; ">
+<div class="container" style="margin-top:50px; margin-bottom:50px; ">
 	<div class="row">
 		 <div class="col-lg-4 col-sm-6"></div>
 			<div class="card shadow-none">

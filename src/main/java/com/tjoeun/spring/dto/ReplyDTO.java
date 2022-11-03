@@ -19,9 +19,7 @@ public class ReplyDTO {
 	private String replyer_name; //리플쓴자의 이름 
 	
 	private Date regdate; //리플쓴날짜 
-	
-	
-	
+
 	
 
 }

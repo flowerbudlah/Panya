@@ -2,6 +2,8 @@ package com.tjoeun.spring.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tjoeun.spring.dto.ProductDTO;
+import com.tjoeun.spring.dto.ProductReplyDTO;
+import com.tjoeun.spring.dto.ReplyDTO;
 import com.tjoeun.spring.service.ProductService;
 
 
@@ -27,7 +32,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-	//상품전체리스트 
+	//1. 전체 상품 리스트 
 	@GetMapping("/product_by_category")
 	public String product_by_category(@RequestParam("category_idx") int category_idx, Model model) {
 		model.addAttribute("category_idx", category_idx); 
@@ -38,7 +43,7 @@ public class ProductController {
 		return "product/product_by_category";
 	}
 	
-	//상품상세보기(게시글 읽기)
+	//2. 상품을 상세히 보기(게시글 읽기)
 	@GetMapping("/product_detail")
 	public String product_detail(@RequestParam("product_idx") int product_idx, Model model) {
 		
@@ -47,60 +52,46 @@ public class ProductController {
 		ProductDTO productDetail = productService.getProductDetail(product_idx);
 		model.addAttribute("productDetail", productDetail);	
 		
+		//1). 해당 상품에 등록된 댓글 출력
+		List<ProductReplyDTO> productReply = null;
+		productReply = productService.replyList(product_idx);
+		model.addAttribute("productReply", productReply);
+		
 		return "product/product_detail";
 	}
 	
-	//상품삭제
+	//3. 상품삭제
 	@GetMapping("/delete")
-	public String delete(
-			int product_idx, 
-			@RequestParam("category_idx") int category_idx, 
-			Model model) {
+	public String delete(int product_idx, @RequestParam("category_idx") int category_idx, Model model) {
 		
 		model.addAttribute("category_idx",category_idx);
-		
 		productService.delete(product_idx);
-		
 		return "redirect:/product/product_by_category?category_idx={category_idx}";
 	}
 	
-	
-	
-	
-	//상품을 등록하는 그 페이지(글쓰기 페이지)
+	//4-1. 상품을 등록하는 그 페이지로 가기(글쓰기 페이지 Create)
 	@GetMapping("/upload")
 	public String upload(
 	@ModelAttribute("newProductDTO") ProductDTO newProductDTO) {
 		
-
 		return "product/upload"; 
 	}
 	
-	//상품등록(사진도 등록하기)
+	//4-2. 상품 실제 등록(사진도 등록하기)
 	@PostMapping("/upload_proc")
-	public String addProduct
-	(@Valid @ModelAttribute("newProductDTO") ProductDTO newProductDTO, BindingResult result, 
-	MultipartFile product_image_file){
-	
+	public String addProduct(@Valid @ModelAttribute("newProductDTO") ProductDTO newProductDTO, BindingResult result, MultipartFile product_image_file){
+		
 		if(result.hasErrors()) {
 			return "product/upload";  
-			}
-	
+		}
+		productService.addProduct(newProductDTO); 	
 		
-		productService.addProduct(newProductDTO); 
-			
 		return "redirect:/product/product_by_category?category_idx="+newProductDTO.getCategory_idx(); 
 	}
 	
-	
-
-	//수정하기
+	//5-1. 수정하기
 	@GetMapping("/modify")
-	public String modify
-	(@RequestParam("category_idx") int category_idx,
-	 @RequestParam("product_idx") int product_idx, 
-	 @ModelAttribute("modifyProductDTO") ProductDTO modifyProductDTO, 
-	 Model model) {
+	public String modify(@RequestParam("category_idx") int category_idx, @RequestParam("product_idx") int product_idx, @ModelAttribute("modifyProductDTO") ProductDTO modifyProductDTO, Model model) {
 		
 		model.addAttribute("category_idx", category_idx);
 		model.addAttribute("product_idx", product_idx);
@@ -118,19 +109,41 @@ public class ProductController {
 			return "product/modify";
 	}
 	
+	//5-2. 수정하면서 
 	@PostMapping("/modify_proc")
 	public String modifyProc
-	(@Valid @ModelAttribute("modifyProductDTO") ProductDTO modifyProductDTO, BindingResult result,
-	Model model) {
+	(@Valid @ModelAttribute("modifyProductDTO") ProductDTO modifyProductDTO, BindingResult result, Model model) {
 		
 		if(result.hasErrors()) {
-			
 			return "product/modify";
 		}
 		productService.modify(modifyProductDTO); 
 		
 		return "redirect:/product/product_by_category?category_idx="+modifyProductDTO.getCategory_idx();
 	}
+	
+	
+	//6. 상품상세 페이지에 등록하는 댓글
+	
+	//1) 상품 댓글 작성 
+	@PostMapping("/product_detail/write")
+	public String write(ProductReplyDTO writeProductReplyDTO, @RequestParam("product_idx") int product_idx, Model model) throws Exception {
+		
+		model.addAttribute("product_idx", product_idx);
+		productService.write(writeProductReplyDTO);
+									
+		return "redirect:/product/product_detail?product_idx="+writeProductReplyDTO.getProduct_idx();
+	}
+
+	
+	//2) 상품 댓글 삭제(아작스 이용)
+	@RequestMapping("/product_detail/deleteProductReply")
+    public @ResponseBody ProductReplyDTO deleteProductReply
+    (HttpServletRequest request, HttpServletResponse response, int product_reply_idx) throws Exception{
+		
+		ProductReplyDTO productReplyDTO = productService.deleteProductReply(product_reply_idx); 
+        return productReplyDTO;
+    }
 	
 	
 	

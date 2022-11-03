@@ -35,8 +35,6 @@
 	
 <div class="address" style="margin-top:20px;">
 <p>서울특별시 서대문구 신촌로 119, 2~3층(창천동) 신촌역 4번출구 80m</p>
-<p>ソウル特別市西大門区新村路 119, 2, 3階(滄川洞) 新村駅4番出口から 80m<br>
-119, Sinchon-ro, Seodaemun-gu, Seoul, 2nd and 3rd floors (Changcheon-dong) Exit 4 of Sinchon Station 80 m</p>
 
 <p><strong>Tel. (+82)02-313-1132<br>Fax.(+82)070-8622-5523</strong></p>
 

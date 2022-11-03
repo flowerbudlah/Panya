@@ -117,10 +117,7 @@ thead{ background-color: #df4759 }
 </div> 
 </c:forEach>
 <!-- 게시판 미리보기 부분 끝-->
-
-
 <!-- 하단 정보 -->  
 <c:import url="/WEB-INF/view/include/bottom_info.jsp" />
 </body>
 </html>
-

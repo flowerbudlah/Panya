@@ -53,10 +53,8 @@ insert into product_table values(32, '아리가토 수제 비스킷 세트(10개
 select * from product_table order by product_idx;
 commit; 
 
-
-
-
-
+--추천버튼(좋아요기능)
+alter table product_table add likeButton int default 0; 
 
 
 

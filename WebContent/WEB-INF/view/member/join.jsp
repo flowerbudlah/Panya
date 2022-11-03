@@ -43,7 +43,6 @@ function resetInputMemberID(){
 	$("#inputMemberID").val('false'); 
 }
 
-
 //Emaill 중복체크하는 제이쿼리와 Ajax
 function checkEmail(){
 	const member_email = $("#member_email").val()
@@ -60,11 +59,9 @@ function checkEmail(){
     	
     	function(result){
         	if(result.trim() == 'true'){
-        		alert(result); 
           		alert('사용하실 수 있습니다. ');
           		$('#inputMemberEmail').val('true');
         	}else{
-        		alert(result); 
           		alert('다른 Email을 이용해주세요.');  
           		$('#inputMemberEmail').val('false');
           }
@@ -129,9 +126,9 @@ function resetInputMemberEmail(){
 				<div class="form-group">
 				<form:label path="member_email">E-mail</form:label>
 				<div class="input-group">
-				<form:input path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
+				<form:input type="email" path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
 					<div class="input-group-append">
-						<button type="button" class="btn btn-danger" onClick="checkEmail();">이메일 중복확인</button>
+						<input type="button" class="btn btn-danger" onClick="checkEmail();" value="이메일 중복확인"/>
 					</div>
 				</div>
 				<form:errors path="member_email" style="color:red;"/>
@@ -146,14 +143,22 @@ function resetInputMemberEmail(){
 					</div>
 					<form:input path="member_address" placeholder="상세주소" id="roadAddress" class="form-control"/>
 				</div>
+				<!-- 아이디 비번 분실시 시작-->
 				<div class="form-group"> 
-					<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>
-					<form:input path="question" class="form-control"/>
+					<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>&nbsp;&nbsp;
+					<form:select path="question">
+						<form:option value="아버지의 이름은 무엇인가요? ">아버지의 이름은 무엇인가요?</form:option>
+    					<form:option value="어머니의 이름은 무엇인가요?">어머니의 이름은 무엇인가요?</form:option>
+    					<form:option value="고향은 어디인가요?">고향은 어디인가요?</form:option>
+    					<form:option value="별명은 무엇인가요?">별명은 무엇인가요?</form:option>
+    					<form:option value="감명깊게 본 책은 무엇인가요?">감명깊게 본 책은 무엇인가요?</form:option>
+					</form:select>
 				</div> 
                  <div class="form-group">
 					<form:label path="answer">위 질문에 대한 답</form:label>
 					<form:input path="answer" class="form-control"/>
 				</div>   
+				<!-- 아이디 비번 분실시 끝 -->
 				<div class="text-right" style="margin-top:100px">
 					<form:button class="btn btn-danger" onclick="javascript:join_success();">회원가입 완료</form:button>
 				</div>

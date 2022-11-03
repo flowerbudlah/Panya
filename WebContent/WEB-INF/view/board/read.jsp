@@ -52,9 +52,7 @@ ul{list-style:none;}
           </div>      
           <div class="form-group">
             <label for="post_content">내용</label>
-            <textarea id="post_content" name="post_content" class="form-control" rows="20" style="resize:none" disabled="disabled">
-            	${readPostDTO.post_text }
-            </textarea>
+            <textarea id="post_content" name="post_content" class="form-control" rows="20" style="resize:none" disabled="disabled">${readPostDTO.post_text }</textarea>
           </div>
           
          <!-- 업로드한 파일이 있는 경우에만 실행하도록 함 -->
@@ -64,9 +62,6 @@ ul{list-style:none;}
           		<img src="${root }upload/${readPostDTO.post_file}" width=100%; height=350px;/>            
           	</div>
 		</c:if>
-          
-          
-               
 <hr/>
 <!-- 댓글시작 -->
 <!--댓글 목록불러오기 -->

@@ -54,45 +54,43 @@ function resetInputMemberEmail(){
 <c:import url="/WEB-INF/view/include/head_meta.jsp" />
 <c:import url="/WEB-INF/view/include/top_menu.jsp"/>
 <!-- 본문 -->
-<div class="container" style="margin-top:50px">
+<div class="container" style="margin-top:50px; margin-bottom:50px;">
 	<div class="row">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-7">
 			<div class="card shadow-none">
 				<div class="card-body">
 				<form:form action='${root }member/modify_proc' method='post' modelAttribute="modifyMemberDTO">
-			
-					
-						<div class="form-group">
-							<form:label path="member_name">이름</form:label>
-							<form:input path="member_name" class='form-control' />
+					<div class="form-group">
+						<form:label path="member_name">이름</form:label>
+						<form:input path="member_name" class='form-control' />
+					</div>
+					<div class="form-group">
+						<form:label path="member_id">아이디</form:label>
+						<form:input path="member_id" class='form-control' readonly="true"/>
+					</div>
+					<div class="form-group">
+						<form:label path="member_pw">비밀번호</form:label>
+						<form:password path="member_pw" class='form-control'/>
+						<form:errors path='member_pw' style='color:red'/>
+					</div>
+					<div class="form-group">
+						<form:label path="member_pw2">비밀번호 확인</form:label>
+						<form:password path="member_pw2" class='form-control'/>
+						<form:errors path='member_pw2' style='color:red'/>
+					</div>
+					<%--이메일 --%>
+					<div class="form-group">
+						<form:label path="member_email">E-mail</form:label>
+						<div class="input-group">
+						<form:input path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
+						<div class="input-group-append">
+							<button type="button" class="btn btn-warning" onClick="checkEmail();">이메일 중복확인</button>
 						</div>
-						<div class="form-group">
-							<form:label path="member_id">아이디</form:label>
-							<form:input path="member_id" class='form-control' readonly="true"/>
 						</div>
-						<div class="form-group">
-							<form:label path="member_pw">비밀번호</form:label>
-							<form:password path="member_pw" class='form-control'/>
-							<form:errors path='member_pw' style='color:red'/>
-						</div>
-						<div class="form-group">
-							<form:label path="member_pw2">비밀번호 확인</form:label>
-							<form:password path="member_pw2" class='form-control'/>
-							<form:errors path='member_pw2' style='color:red'/>
-						</div>
-						<%--이메일 --%>
-						<div class="form-group">
-							<form:label path="member_email">E-mail</form:label>
-							<div class="input-group">
-								<form:input path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
-								<div class="input-group-append">
-									<button type="button" class="btn btn-warning" onClick="checkEmail();">이메일 중복확인</button>
-								</div>
-							</div>
-							<form:errors path="member_email" style="color:red;" />
-						</div>
-						<%--이메일 끝 --%>	
+						<form:errors path="member_email" style="color:red;" />
+					</div>
+					<%--이메일 끝 --%>	
 						<div class="form-group">
 							<form:label path="member_tel">연락처</form:label>
 							<form:input path="member_tel" class='form-control'/>
@@ -107,8 +105,14 @@ function resetInputMemberEmail(){
 					
 						</div>
 						<div class="form-group">
-							<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>
-							<form:input path="question" class='form-control'/>
+							<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>&nbsp;&nbsp;
+							<form:select path="question">
+								<form:option value="아버지의 이름은 무엇인가요? ">아버지의 이름은 무엇인가요?</form:option>
+    							<form:option value="어머니의 이름은 무엇인가요?">어머니의 이름은 무엇인가요?</form:option>
+    							<form:option value="고향은 어디인가요?">고향은 어디인가요?</form:option>
+    							<form:option value="별명은 무엇인가요?">별명은 무엇인가요?</form:option>
+    							<form:option value="감명깊게 본 책은 무엇인가요?">감명깊게 본 책은 무엇인가요?</form:option>
+							</form:select>
 						</div>
 						<div class="form-group">
 							<form:label path="answer">위 질문에 대한 답</form:label>

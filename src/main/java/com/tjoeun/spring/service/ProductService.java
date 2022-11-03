@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tjoeun.spring.dao.ProductDAO;
 import com.tjoeun.spring.dto.ProductDTO;
+import com.tjoeun.spring.dto.ProductReplyDTO;
+import com.tjoeun.spring.dto.ReplyDTO;
 
 
 @Service
@@ -23,8 +25,6 @@ public class ProductService {
 	
 	@Value("${item.path.load}")
 	private String item_path_load;
-	
-	
   
 	//상품리스트
 	public List<ProductDTO> getProductListByCategory(int category_idx){
@@ -38,7 +38,6 @@ public class ProductService {
 			return productDetail;
 	}
 	
-	
 	//이미지 파일 첨부
 	private String saveUploadFile(MultipartFile product_image_file) {
 		
@@ -50,6 +49,7 @@ public class ProductService {
 		}
 			return file_name;
 	}
+	
 	//상품등록
 	public void addProduct(ProductDTO newProductDTO) {
 		//상품을 등록하기 전에 이경우는 반드시 이미지 파일을 업로드 하기 때문
@@ -61,9 +61,6 @@ public class ProductService {
 	
 		productDAO.addProduct(newProductDTO);
 	}
-	
-	
-	
 	
 	//상품삭제
 	public void delete(int product_idx) {
@@ -82,6 +79,33 @@ public class ProductService {
 		}
 			productDAO.modify(modifyProductDTO);
 	}
+
+	//상품 댓글 작성
+	public void write(ProductReplyDTO writeProductReplyDTO) {
+		productDAO.write(writeProductReplyDTO);
+	}
+
+	//이 해당 상품에 해당되는 댓글 목록 가져오기
+	public List<ProductReplyDTO> replyList(int product_idx) {
+		return productDAO.replyList(product_idx);
+	}
+
+	//상품 댓글 삭제(Ajax 이용)
+	public ProductReplyDTO deleteProductReply(int product_reply_idx) {
+		
+		ProductReplyDTO productReplyDTO = new ProductReplyDTO();
+ 
+        int deleteCnt = productDAO.deleteProductReply(product_reply_idx); 
+        if (deleteCnt > 0) {
+        	productReplyDTO.setResult("SUCCESS");
+        } else {
+        	productReplyDTO.setResult("FAIL");
+        }
+        return productReplyDTO;
+	}
+	
+	
+	
 	
 	
 

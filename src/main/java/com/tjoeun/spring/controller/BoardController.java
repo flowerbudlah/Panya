@@ -92,6 +92,7 @@ public class BoardController {
 			
 			return "board/write";
 	}
+	
 	@PostMapping("/write_proc")
 	public String writeProc
 	(@Valid @ModelAttribute("writePostDTO") PostDTO writePostDTO, 
@@ -109,8 +110,6 @@ public class BoardController {
 	public String notWriter() {
 		return "board/not_writer";
 	}
-	
-	
 	
 	//수정하기
 	@GetMapping("/modify")
@@ -138,6 +137,7 @@ public class BoardController {
 		
 			return "board/modify";
 	}
+	
 	@PostMapping("/modify_proc")
 	public String modifyProc
 	(@Valid @ModelAttribute("modifyPostDTO") PostDTO modifyPostDTO, 

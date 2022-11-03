@@ -10,8 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 <![CDATA[
 		select post_idx, reply_idx, replyer_id, p.member_name replyer_name, reply_content, regDate
 		from reply_table r, panya_member_table p
-        where post_idx = #{post_idx}        
-        and r.replyer_id = p.member_id 
+        where post_idx = #{post_idx} and r.replyer_id = p.member_id 
 	]]>
 	</select>
 
@@ -22,15 +21,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(reply_seq.nextval, #{post_idx}, #{replyer_id}, #{reply_content, jdbcType=VARCHAR}, sysdate)
         ]]>
 	</insert>
-    
-	<!-- 댓글 수정(그러나 디시처럼 구현안할예정) -->
-	<update id="replyModify" parameterType="com.tjoeun.spring.dto.ReplyDTO">
-	 <![CDATA[
-	 	update reply_table 
-	 	set reply_content = #{reply_content}
-	 	where reply_idx = #{reply_idx} and post_idx = #{post_idx}    
-	 ]]>
-	</update>
 
 	<!-- 댓글 삭제-->
 	<delete id="replyDelete" parameterType="java.lang.Integer">

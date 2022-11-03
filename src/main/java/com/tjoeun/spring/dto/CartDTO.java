@@ -17,7 +17,8 @@ public class CartDTO implements Serializable{
 	private int amount;//수량
 	private int totalPrice;//총액 = 단가 x 수량
 	private String product_img; 
-	private Date regdate; 
+	
+	private Date regdate; //카트에 넣은 날짜 
 
 	
 	public CartDTO() {

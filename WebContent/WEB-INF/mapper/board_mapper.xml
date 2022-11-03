@@ -8,7 +8,8 @@
  <!-- 게시판 글 목록 가져오기(댓글 달린수 제목 옆에 붙이기) -->
   <select id="getPostList" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.PostDTO">
    <![CDATA[
-      SELECT P.POST_BOARD_IDX, P.POST_IDX, P.POST_SUBJECT, M.MEMBER_NAME POST_WRITER_NAME, TO_CHAR(P.POST_DATE, 'YYYY-MM-DD') POST_DATE, P.POST_READ_COUNT, 
+      SELECT P.POST_BOARD_IDX, P.POST_IDX, P.POST_SUBJECT, M.MEMBER_NAME POST_WRITER_NAME, 
+      		TO_CHAR(P.POST_DATE, 'YYYY-MM-DD') POST_DATE, P.POST_READ_COUNT, 
       		(SELECT COUNT(*) FROM reply_table WHERE post_idx = p.post_idx) AS REPLY_CNT, P.POST_FILE
       FROM POST_TABLE P, PANYA_MEMBER_TABLE M
       WHERE P.POST_WRITER_IDX = M.MEMBER_IDX AND P.POST_BOARD_IDX = #{board_idx} 

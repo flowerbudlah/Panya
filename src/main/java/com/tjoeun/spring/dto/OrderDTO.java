@@ -22,11 +22,9 @@ public class OrderDTO {
 	private int recipient_postcode; 	
 	private String recipient_tel; 
 	
-	
 	private Date order_date; //결제일 
 	private String memo; 
 	private String payment_method; 
-	
 	
 	private String circumstance; 
 	//현재 해당 상황(1. 결제완료(이경우만 100프로 환불가능), 2. 배송준비중, 3. 배송중, 4. 배송완료) 이것은 처음 결제를 시작했을땐 무조건 결제완료

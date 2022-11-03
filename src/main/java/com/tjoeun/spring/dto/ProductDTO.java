@@ -29,4 +29,6 @@ public class ProductDTO {
 	private String product_img; //사진이름 .png
 	private MultipartFile product_image_file; //상품이미지 파일 
 	
+	private int likeButton; //좋아요(상품추천)
+	
 }

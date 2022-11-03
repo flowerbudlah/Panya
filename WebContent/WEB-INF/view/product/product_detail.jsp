@@ -75,17 +75,56 @@ $(document).ready(function() {
 	}); //장바구니 넣기 부분 
 		
 });
+
+//상품 댓글 삭제 아작스
+function deleteProductReply(){
+	var product_reply_idx = $("#product_reply_idx").val();
+	var yn = confirm("게시글을 삭제하시겠습니까?");        
+    if(yn){
+        $.ajax({    
+         	url      : "${root}product/product_detail/deleteProductReply", 
+            type     : "POST",    
+            data : { product_reply_idx : product_reply_idx },
+            dataType : "JSON",
+            success  : function(obj) {
+                deleteBoardCallback(obj);                
+            },           
+            error    : function(request, status, error) {
+            	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	
+            } 
+         });
+    } //yn 끝        
+} 
+//상품댓글 삭제 콜백함수
+function deleteBoardCallback(obj){
+
+    if(obj != null){        
+        var result = obj.result;
+        if(result == "SUCCESS"){  
+        	history.go(0); //페이지 리프레쉬
+            alert("댓글 삭제를 성공하였습니다.");      
+        } else {     
+            alert("댓글 삭제를 실패하였습니다.");    
+            return;
+        }
+    }
+}
 </script>
 </head>
 <style>
 .entire{border: 1px solid lightgray; font-size: 15px; }
+
+ul{list-style:none;}
+.reply{ font-size: 12px;  }
+.reply_writer{ text-align:left; position: absolute; }
+.reply_date{ text-align:right;  position: relative; }
 </style>
 <body>
 <c:import url="/WEB-INF/view/include/head_meta.jsp" />
 <c:import url="/WEB-INF/view/include/top_menu.jsp"/>
 <!-- 내용 -->
-<div align="center">
-<div class="container" style="margin-top:50px; margin-bottom: 200px; ">
+<div align="center" style="margin-bottom: 50px;">
+<div class="container" style="margin-top:50px; margin-bottom: 50px; ">
 <!-- 시작 -->
 <table class="entire">
 	<tr><!-- 상품 사진 출력 영역 -->
@@ -109,7 +148,6 @@ $(document).ready(function() {
 				<tr align="center">
 					<td width="80">&nbsp;&nbsp;배송비: </td>
 					<td width="160">3,000 원</td>
-					
 				</tr>
 				<tr align="center">
 					<td width="80">&nbsp;&nbsp;보관방법: </td>
@@ -143,17 +181,73 @@ $(document).ready(function() {
 		</td>
 	</tr>
 </table>
-<!-- 끝 -->
-
+<!-- 추천기능 -->
+<br>
+<img src="${root }image/like.png" width=100px; ><br>
+이 상품을 <strong>추천</strong>하시겠습니까? 
+<!-- 1. 댓글과 대댓글 -->
+<div class="container" style="margin-top:50px; margin-bottom:100px;">
+<hr/>
+<!-- 1) 상품 댓글 목록 불러오기 -->
+<div class="reply">
+	<ul>
+	<c:forEach var="productReply" items="${productReply}" >
+		<li>
+			<!-- 상품댓글 번호 -->
+			<input type="hidden" id="product_reply_idx" name="product_reply_idx" value="${productReply.product_reply_idx}"/>
+			<div class="reply_writer">작성자: ${productReply.product_replyer_name}</div>
+			<div class="reply_date">댓글 작성 일시: <fmt:formatDate value="${productReply.regdate}" pattern="yyyy-MM-dd(E) HH:mm:ss"/>
+				<!-- 댓글삭제버튼은 댓글작성자와 관리자만 볼 수 있게 처리 -->
+				<c:if test="${(loginMemberDTO.member_id eq productReply.product_replyer_id) || (loginMemberDTO.member_id eq 'admin')}">
+					<a href="javascript:void(0);" class="badge badge-pill badge-light" style="font-size:13px;" onclick="javascript:deleteProductReply();">
+						X
+					</a>
+				</c:if>
+			</div>
+			<textarea id="product_reply_content" name="product_reply_content" class="form-control" rows="3" style="resize:none" disabled="disabled">${productReply.product_reply_content}</textarea>
+		</li>
+		<br>
+		<!-- 댓글에 대한 댓글도 로그인한 경우만 보이게 -->
+		<c:if test="${loginMemberDTO.memberLogin == true }">    
+			<div class="text-left">
+				<img src="https://img.icons8.com/fluent-systems-regular/2x/down-right.png" width="20px;" height="20px;">
+				<textarea cols="170" rows="2" style="resize:none" placeholder="위 댓글에 대한 댓글 입니다."></textarea>
+				<div class="text-right">
+					<button type="button" class="btn btn-warning btn-sm">대댓글 작성완료</button>
+				</div>
+			</div>
+			<br>
+		</c:if>
+	</c:forEach>
+	</ul>
 </div>
+<!-- 로그인 한 회원에게만 상품 댓글 작성폼이 보이게 처리 -->
+<c:if test="${loginMemberDTO.memberLogin == true }">    
+<div>
+	<form method="post" action="${root}product/product_detail/write">
+		<input type="hidden" id="product_idx" name="product_idx" value="${product_idx }">
+		<input type="hidden" id="product_relyer_id" name="product_replyer_id" value="${loginMemberDTO.member_id }">
+		<textarea name="product_reply_content" id="product_reply_content" class="form-control" rows="3" style="resize:none" placeholder="이 상품에 대한 소감을 댓글로 남겨주세요. "></textarea>
+		<div class="text-right">
+			<button type="submit" class="btn btn-success btn-sm" style="text-align:right;">댓글 작성</button>
+		</div>
+	</form>
+</div>
+</c:if>
+</div>
+<!-- 댓글과 대댓글의 끝-->
+
+<button type="button" onclick="history.go(-1);" class="btn btn-info btn-sm">이전 페이지로 돌아가기</button>
 <!-- 상품삭제버튼과 정보수정버튼은 관리자에게만 보인다. -->
 <c:choose>
 	<c:when test="${loginMemberDTO.member_id eq 'admin'}"><%--관리자가 로그인을 한 경우(공지사항 게시판의 경우는 관리자만 사용가능하다. ) --%>
-		<a href="${root }product/modify?category_idx=${productDetail.category_idx}&product_idx=${productDetail.product_idx}" class="btn btn-secondary btn-sm" style="color:white">해당상품 정보 수정하기</a>
-		<a href="${root }product/delete?category_idx=${productDetail.category_idx}&product_idx=${productDetail.product_idx}" class="btn btn-dark btn-sm" style="color:white">해당상품 삭제하기</a>
+		<a href="${root }product/modify?category_idx=${productDetail.category_idx}&product_idx=${productDetail.product_idx}" class="btn btn-primary btn-sm" style="color:white">해당상품 정보 수정하기</a>
+		<a href="${root }product/delete?category_idx=${productDetail.category_idx}&product_idx=${productDetail.product_idx}" class="btn btn-secondary btn-sm" style="color:white">해당상품 삭제하기</a>
 	</c:when>
 	<c:otherwise></c:otherwise>
 </c:choose>
+</div>
+
 </div>
 <!-- 하단정보 -->
 <c:import url="/WEB-INF/view/include/bottom_info.jsp" />

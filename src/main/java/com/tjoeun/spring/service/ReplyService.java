@@ -24,11 +24,7 @@ public class ReplyService {
 	    replyDAO.write(writeReplyDTO);
 	}
 
-	//댓글수정
-	public void modify(ReplyDTO modifyReplyDTO){
-		replyDAO.modify(modifyReplyDTO);
-	}
-
+	
 	//댓글삭제
 	public void delete(int reply_idx){
 	    replyDAO.delete(reply_idx);

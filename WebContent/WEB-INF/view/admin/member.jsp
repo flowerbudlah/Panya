@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath }/" />
 <!DOCTYPE html>
 <html>
@@ -16,6 +17,7 @@ td{text-align:center; border: 1px solid gray;}
 <body>
 <c:import url="/WEB-INF/view/include/head_meta.jsp" />
 <c:import url="/WEB-INF/view/include/top_menu.jsp" />
+<!-- 시작 -->
 <div class="container" style="margin:50px;">
 <h5>${loginMemberDTO.member_name } 전용 페이지 (The Page for the Administrator only)</h5>
 <p>회원목록</p>
@@ -29,8 +31,6 @@ td{text-align:center; border: 1px solid gray;}
 	<input type="submit" value="회원 검색" class="btn btn-danger btn-sm" /> 
 </form>
 <!-- 검색기능끝 -->
-
-
 <table style="width: 1250px; margin: auto;">
 		<thead>
 			<tr>
@@ -52,7 +52,7 @@ td{text-align:center; border: 1px solid gray;}
 				<td style="text-align: center;">${allMemberList.member_tel }</td>
 				<td style="text-align: center;">${allMemberList.member_address }</td>
 				<td style="text-align: center;">${allMemberList.member_email}</td>
-				<td style="text-align: center;">${allMemberList.registerDate }</td>
+				<td style="text-align: center;"><fmt:formatDate pattern="yyyy-MM-dd(E) hh시 mm분 ss초" value="${allMemberList.registerDate }" /></td>
 			</tr>
 		</c:forEach>
 		</tbody>

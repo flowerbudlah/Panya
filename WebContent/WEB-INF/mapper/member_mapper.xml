@@ -12,10 +12,8 @@
   	 
 	<!-- 이메일 중복 -->
 	<select id="checkEmail" resultType="java.lang.String" parameterType="java.lang.String">
-	<![CDATA[select member_id from panya_member_table where member_email = #{member_email}]]>
+	<![CDATA[select member_id from panya_member_table where member_email like '%'||#{member_email}||'%']]>
 	</select>
-  	  
-  	  
   	  
 	<!-- 회원가입 -->
 	<insert id="addMemberInfo" parameterType="com.tjoeun.spring.dto.MemberDTO">
@@ -72,6 +70,7 @@
 		where MEMBER_ID = #{member_id}
 	]]>  
 	</select>
+	
 <!-- 2. 회원가입시 입력한 답을 제출하여 비번찾기(로그인과 형태유사? ) -->
 	<select id="find_password" 
 	parameterType="com.tjoeun.spring.dto.MemberDTO" 

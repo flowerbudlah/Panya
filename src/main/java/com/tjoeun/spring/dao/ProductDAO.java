@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tjoeun.spring.dto.ProductDTO;
+import com.tjoeun.spring.dto.ProductReplyDTO;
 
 @Repository
 public class ProductDAO {
@@ -41,6 +42,23 @@ public class ProductDAO {
 	//상품수정
 	public void modify(ProductDTO modifyProductDTO) {
 		sqlSessionTemplate.update("product.modify", modifyProductDTO);
+	}
+
+	//상품댓글 작성
+	public void write(ProductReplyDTO writeProductReplyDTO) {
+		sqlSessionTemplate.insert("product.replyWrite", writeProductReplyDTO); 
+		
+	}
+
+	//이 상품에 해당하는 댓글 목록 가져오기
+	public List<ProductReplyDTO> replyList(int product_idx) {
+		  return sqlSessionTemplate.selectList("product.replyList", product_idx);
+	}
+
+	//상품 댓글 삭제
+	public int deleteProductReply(int product_reply_idx) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("product.deleteProductReply", product_reply_idx); 
 	}
 	
 	
