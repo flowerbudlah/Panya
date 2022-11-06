@@ -133,7 +133,6 @@ function resetInputMemberEmail(){
 				</div>
 				<form:errors path="member_email" style="color:red;"/>
 				</div>
-				
 				<%--주소입력 --%>
 				<div class="form-group">
 					<form:label path="member_address">주소</form:label>
@@ -146,7 +145,7 @@ function resetInputMemberEmail(){
 				<!-- 아이디 비번 분실시 시작-->
 				<div class="form-group"> 
 					<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>&nbsp;&nbsp;
-					<form:select path="question">
+					<form:select path="question" class="form-control">
 						<form:option value="아버지의 이름은 무엇인가요? ">아버지의 이름은 무엇인가요?</form:option>
     					<form:option value="어머니의 이름은 무엇인가요?">어머니의 이름은 무엇인가요?</form:option>
     					<form:option value="고향은 어디인가요?">고향은 어디인가요?</form:option>
