@@ -49,8 +49,8 @@ public class MemberDTO {
 		this.inputMemberEmail = false; 
 	}
 	
-	private String keyword;
-	private String type;
+	private String keyword; //관리자전용 페이지에서 회원검색시 필요한 것 
+	private String type; //관리자전용 페이지에서 회원검색시 필요한 것 
 	
 }
 
