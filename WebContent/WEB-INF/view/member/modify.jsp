@@ -17,7 +17,6 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 //이메일 중복체크하는 제이쿼리와 아작스
-//Emaill 중복체크하는 제이쿼리와 Ajax
 function checkEmail(){
 	const member_email = $("#member_email").val()
 	if(member_email.length == 0){
@@ -33,11 +32,9 @@ function checkEmail(){
     	
     	function(result){
         	if(result.trim() == 'true'){
-        		alert(result); 
           		alert('사용하실 수 있습니다. ');
           		$('#inputMemberEmail').val('true');
         	}else{
-        		alert(result); 
           		alert('다른 Email을 이용해주세요.');  
           		$('#inputMemberEmail').val('false');
           }
@@ -47,6 +44,7 @@ function checkEmail(){
 function resetInputMemberEmail(){
 	$("#inputMemberEmail").val('false'); 
 }
+  
 </script>
 </head>
 <body>
@@ -61,6 +59,7 @@ function resetInputMemberEmail(){
 			<div class="card shadow-none">
 				<div class="card-body">
 				<form:form action='${root }member/modify_proc' method='post' modelAttribute="modifyMemberDTO">
+				<form:hidden path="inputMemberEmail" />
 					<div class="form-group">
 						<form:label path="member_name">이름</form:label>
 						<form:input path="member_name" class='form-control' />
@@ -82,48 +81,46 @@ function resetInputMemberEmail(){
 					<%--이메일 --%>
 					<div class="form-group">
 						<form:label path="member_email">E-mail</form:label>
-						<div class="input-group">
-						<form:input path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
-						<div class="input-group-append">
-							<button type="button" class="btn btn-warning" onClick="checkEmail();">이메일 중복확인</button>
-						</div>
-						</div>
+							<div class="input-group">
+								<form:input path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-warning" onClick="checkEmail();">이메일 중복확인</button>
+								</div>
+							</div>
 						<form:errors path="member_email" style="color:red;" />
 					</div>
 					<%--이메일 끝 --%>	
-						<div class="form-group">
-							<form:label path="member_tel">연락처</form:label>
-							<form:input path="member_tel" class='form-control'/>
+					<div class="form-group">
+						<form:label path="member_tel">연락처</form:label>
+						<form:input path="member_tel" class='form-control'/>
+					</div>
+					<div class="form-group">
+						<form:label path="member_address">주소</form:label>
+						<div class="input-group-append">
+							<form:input path="postcode" class='form-control'/>&nbsp;
+							<input type="button" class="btn btn-danger btn-sm" id="searchAdd" value="우편번호 찾기" >
 						</div>
-						<div class="form-group">
-							<form:label path="member_address">주소</form:label>
-							<div class="input-group-append">
-								<form:input path="postcode" class='form-control'/>&nbsp;
-								<input type="button" class="btn btn-danger btn-sm" id="searchAdd" value="우편번호 찾기" >
-							</div>
-							<form:input path="member_address" class='form-control' id="roadAddress"/>
-					
+						<form:input path="member_address" class='form-control' id="roadAddress"/>
+					</div>
+					<div class="form-group">
+						<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>&nbsp;&nbsp;
+						<form:select path="question" class="form-control">
+							<form:option value="아버지의 이름은 무엇인가요? ">아버지의 이름은 무엇인가요?</form:option>
+    						<form:option value="어머니의 이름은 무엇인가요?">어머니의 이름은 무엇인가요?</form:option>
+    						<form:option value="고향은 어디인가요?">고향은 어디인가요?</form:option>
+    						<form:option value="별명은 무엇인가요?">별명은 무엇인가요?</form:option>
+    						<form:option value="감명깊게 본 책은 무엇인가요?">감명깊게 본 책은 무엇인가요?</form:option>
+						</form:select>
+					</div>
+					<div class="form-group">
+						<form:label path="answer">위 질문에 대한 답</form:label>
+						<form:input path="answer" class='form-control'/>
+					</div>
+					<div class="form-group">
+						<div class="text-right" style="margin-top:100px">
+							<form:button class='btn btn-danger'>정보수정 완료</form:button>
 						</div>
-						<div class="form-group">
-							<form:label path="question">아이디 또는 비밀번호 분실시 질문</form:label>&nbsp;&nbsp;
-							<form:select path="question" class="form-control">
-								<form:option value="아버지의 이름은 무엇인가요? ">아버지의 이름은 무엇인가요?</form:option>
-    							<form:option value="어머니의 이름은 무엇인가요?">어머니의 이름은 무엇인가요?</form:option>
-    							<form:option value="고향은 어디인가요?">고향은 어디인가요?</form:option>
-    							<form:option value="별명은 무엇인가요?">별명은 무엇인가요?</form:option>
-    							<form:option value="감명깊게 본 책은 무엇인가요?">감명깊게 본 책은 무엇인가요?</form:option>
-							</form:select>
-						</div>
-						<div class="form-group">
-							<form:label path="answer">위 질문에 대한 답</form:label>
-							<form:input path="answer" class='form-control'/>
-						</div>
-		
-						<div class="form-group">
-							<div class="text-right" style="margin-top:100px">
-								<form:button class='btn btn-danger'>정보수정 완료</form:button>
-							</div>
-						</div>
+					</div>
 					</form:form>
 				</div>
 			</div>

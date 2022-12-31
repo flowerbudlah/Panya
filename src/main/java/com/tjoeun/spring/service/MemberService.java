@@ -49,8 +49,7 @@ public class MemberService {
 	public void addMemberInfo(MemberDTO joinMemberDTO) {
 		memberDAO.addUserInfo(joinMemberDTO);
 	}
-  
-	//濡쒓렇�씤
+ 
 	public void getLoginMemberDTO(MemberDTO tmpLoginMemberDTO) {
 		MemberDTO fromDBMemberDTO = memberDAO.getLoginMemberDTO(tmpLoginMemberDTO);
 		
@@ -81,18 +80,18 @@ public class MemberService {
 		modifyMemberDTO.setMember_idx(loginMemberDTO.getMember_idx());
 	} 
 
-	//�쉶�썝�젙蹂댁닔�젙 
+	//회원정보 수정 버튼 누르기 
 	public void modifyMemberInfo(MemberDTO modifyMemberDTO){
 		modifyMemberDTO.setMember_idx(loginMemberDTO.getMember_idx());
 		memberDAO.modifyMemberInfo(modifyMemberDTO);
 	}
 	
-	//�쉶�썝�깉�눜 
+	//회원탈퇴
 	public void delete(MemberDTO deleteMemberDTO) throws Exception{
 		memberDAO.delete(deleteMemberDTO);
 	}
 	
-	// �븘�씠�뵒 李얘린
+
 	public String find_id(HttpServletResponse response, String member_email) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -111,8 +110,6 @@ public class MemberService {
 		}
 	}
 	
-	
-	//鍮꾨�踰덊샇瑜� 李얘린�쐞�븳 泥ル떒怨꾨줈 �쉶�썝媛��엯�떆 �엯�젰�븳 鍮꾨쾲 遺꾩떎�떆 吏덈Ц諛쏄린 
 	public MemberDTO find_question(HttpServletResponse response, String member_id) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -131,13 +128,12 @@ public class MemberService {
 		} 
 	}
 	
-	
-	// 鍮꾨�踰덊샇 李얘린(吏덈Ц�뿉 ���븳 �떟怨� �븘�씠�뵒瑜� �엯�젰�븳 �뮘�뿉-濡쒓렇�씤諛⑹떇怨� �쑀�궗 )
 	public MemberDTO find_password(MemberDTO answerAndId) {
 		return memberDAO.find_password(answerAndId);
 		
 	}
 	
+
 	
 	
 	}

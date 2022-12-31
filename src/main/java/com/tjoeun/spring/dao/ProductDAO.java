@@ -60,6 +60,10 @@ public class ProductDAO {
 		return sqlSessionTemplate.delete("product.deleteProductReply", product_reply_idx); 
 	}
 	
+	//좋아요
+	public int like(int product_idx) {
+		return sqlSessionTemplate.update("product.like", product_idx);
+	}
 	
 	
 	

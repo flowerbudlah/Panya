@@ -75,6 +75,7 @@ public class MemberController {
 	public String join(@ModelAttribute("joinMemberDTO") MemberDTO joinMemberDTO) {
 		return "member/join";
 	}
+	
 	//회원가입 버튼 누르기
 	@PostMapping("/join_proc")
 	public String joinProc
@@ -90,30 +91,28 @@ public class MemberController {
 	
 	//회원정보수정
 	@GetMapping("/modify")
-	public String modify
-	(@ModelAttribute("modifyMemberDTO") MemberDTO modifyMemberDTO) {
+	public String modify(@ModelAttribute("modifyMemberDTO") MemberDTO modifyMemberDTO) {
 		memberService.getModifyMemberDTO(modifyMemberDTO);
 		return "member/modify";
 	}
+	
 	//회원정보수정 완료 버튼 누르고 나서
 	@PostMapping("/modify_proc")
-	public String modifyProc
-	(@Valid @ModelAttribute("modifyMemberDTO") MemberDTO modifyMemberDTO, BindingResult result){
+	public String modifyProc(@Valid @ModelAttribute("modifyMemberDTO") MemberDTO modifyMemberDTO, BindingResult result){
 		
 		if(result.hasErrors()) { 
 			return "member/modify";
 		}
-		memberService.modifyMemberInfo(modifyMemberDTO);
+			memberService.modifyMemberInfo(modifyMemberDTO);
 			return "member/modify_success";
+		
 	}
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		MemberValidator validator1 = new MemberValidator();
 		binder.addValidators(validator1);
-		}
-	/* @InitBinder @Valid 로 유효성 검사를 하는 객체(Bean)를 주입하기 전에 수행할 내용을 지정함. 
-	 Controller 로 들어오는 모든 요청 전에 @InitBinder로 선언한 메소드가 실행됨. */
-	
+	}
 	
 	
   	//회원 탈퇴 get

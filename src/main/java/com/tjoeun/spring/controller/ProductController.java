@@ -145,5 +145,16 @@ public class ProductController {
     }
 	
 	
+	
+	//6. 좋아요(추천, 공감)
+	@RequestMapping("/product_detail/like") 
+	public @ResponseBody ProductDTO like(HttpServletRequest request, HttpServletResponse response, int product_idx) throws Exception {
+		ProductDTO likeProductDTO = productService.like(product_idx);
+		return likeProductDTO;
+	}
+	
+	
+	
+	
 
 }

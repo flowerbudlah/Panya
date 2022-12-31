@@ -31,4 +31,9 @@ public class ProductDTO {
 	
 	private int likeButton; //좋아요(상품추천)
 	
+	private String result; //결과값 susccess or fail
+	
+	
+	
+	
 }

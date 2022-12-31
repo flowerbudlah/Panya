@@ -16,13 +16,13 @@ public class MemberDAO {
 	//1. 아이디 중복체크 
 	public String checkID(String member_id) {
 		String ckecking_id = sqlSessionTemplate.selectOne("member.checkID", member_id);
-			return ckecking_id;
+		return ckecking_id;
 	}
 	
 	//2. 이메일 중복체크
 	public String checkEmail(String member_email) {
 		String checking_email = sqlSessionTemplate.selectOne("member.checkEmail", member_email);
-			return checking_email;
+		return checking_email;
 	}
 	
 	public void addUserInfo(MemberDTO joinMemberDTO){
@@ -35,12 +35,13 @@ public class MemberDAO {
 	}
 	
 	
-	//�쉶�썝�젙蹂대�� �닔�젙�븯湲� �쐞�빐�꽌 �궡 而� db�뿉 ���옣�맂 洹� �젙蹂대�� 媛��졇�삤�뒗寃� 
+	//수정하고자하는 회언정보를 가져오기
 	public MemberDTO getModifyMemberDTO(int member_idx) {                      
 		MemberDTO fromDBModifyMemberDTO = sqlSessionTemplate.selectOne("member.getModifyMemberDTO", member_idx);
 			return fromDBModifyMemberDTO;
   	} 
-	public void modifyMemberInfo(MemberDTO modifyMemberDTO){//�쉶�썝�젙蹂댁닔�젙 
+	//회원정보수정 버튼 누르기
+	public void modifyMemberInfo(MemberDTO modifyMemberDTO){
 		sqlSessionTemplate.update("member.modifyMemberInfo", modifyMemberDTO);
 	}
 	
@@ -63,8 +64,6 @@ public class MemberDAO {
 	public MemberDTO find_password(MemberDTO answerAndId){
 		return sqlSessionTemplate.selectOne("member.find_password", answerAndId);
 	}
- 
-
 
 
 

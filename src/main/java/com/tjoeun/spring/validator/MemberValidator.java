@@ -22,41 +22,28 @@ public class MemberValidator implements Validator {
 		System.out.println("dtoName : " + dtoName);
 		
 		if(dtoName.equals("joinMemberDTO") || dtoName.equals("modifyMemberDTO")) {
-			
-			if(loginMemberDTO.getMember_pw().equals( loginMemberDTO.getMember_pw2() ) == false) {//�엯�젰�븳 鍮꾨쾲 �몢媛쒓� �떎瑜대떎. 
+			if(loginMemberDTO.getMember_pw().equals( loginMemberDTO.getMember_pw2() ) == false) { 
 				errors.rejectValue("member_pw", "NotEquals");
 				errors.rejectValue("member_pw2", "NotEquals");
 			}
 		}
 		
-
-		if(dtoName.equals("joinMemberDTO")){
-			
+		if(dtoName.equals("joinMemberDTO")){ //회원가입시
 			if(loginMemberDTO.isInputMemberID() == false) {	
 				errors.rejectValue("member_id", "DontCheckMemberIdExist");
 			}
-		
 			if(loginMemberDTO.isInputMemberEmail() == false) {	
 				errors.rejectValue("member_email", "CheckMemberEmailExist");
 			}
-			
-			
-			
 		}
-		
 	
-		
-		
-		
-		
-		
+		if(dtoName.equals("modifyMemberDTO")){//회원정보수정시
+			
+			if(loginMemberDTO.isInputMemberEmail() == false) { 
+				errors.rejectValue("member_email", "CheckMemberEmailExist");
+			}
+		}
+	
+	
 	}
-	
-	
-	
-
 }
-
-
-
-

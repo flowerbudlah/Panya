@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="member">
   
@@ -54,38 +52,18 @@
 	
 	<!--잃어버린 아이디를 찾는 기능 -->
 	<select id="find_id" parameterType="java.lang.String" resultType="java.lang.String">
-	<![CDATA[
-		select member_id 
-		from PANYA_MEMBER_TABLE 
-		where MEMBER_EMAIL = #{member_email}
-	]]>  
+	<![CDATA[select member_id from panya_member_table where member_email = #{member_email}]]>  
 	</select>
 	
-<!-- 비번찾는단계 -->
-<!-- 1. 회원가입시 입력한 질문을 얻기 -->
+	<!-- 비번찾는단계 -->
+	<!-- 1. 회원가입시 입력한 질문을 얻기 -->
 	<select id="find_question" parameterType="java.lang.String" resultType="com.tjoeun.spring.dto.MemberDTO">
-	<![CDATA[
-		select member_id, question
-		from PANYA_MEMBER_TABLE 
-		where MEMBER_ID = #{member_id}
-	]]>  
+	<![CDATA[select member_id, question from PANYA_MEMBER_TABLE where MEMBER_ID = #{member_id}]]>  
 	</select>
 	
-<!-- 2. 회원가입시 입력한 답을 제출하여 비번찾기(로그인과 형태유사? ) -->
-	<select id="find_password" 
-	parameterType="com.tjoeun.spring.dto.MemberDTO" 
-	resultType="com.tjoeun.spring.dto.MemberDTO">
-	<![CDATA[
-		select * 
-		from PANYA_MEMBER_TABLE 
-		where answer = #{answer} and member_id = #{member_id} 
-	]]>  
+	<!-- 2. 회원가입시 입력한 답을 제출하여 비번찾기(로그인과 형태유사? ) -->
+	<select id="find_password" parameterType="com.tjoeun.spring.dto.MemberDTO" resultType="com.tjoeun.spring.dto.MemberDTO">
+	<![CDATA[select * from PANYA_MEMBER_TABLE where answer = #{answer} and member_id = #{member_id}]]>  
 	</select>
-
-
-          
+	
 </mapper>
-
-
-
-

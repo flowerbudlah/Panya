@@ -46,6 +46,7 @@ function resetInputMemberID(){
 //Emaill 중복체크하는 제이쿼리와 Ajax
 function checkEmail(){
 	const member_email = $("#member_email").val()
+	
 	if(member_email.length == 0){
 		alert('가입하실 Email를 입력해주세요!');
 		return; 
@@ -71,7 +72,6 @@ function checkEmail(){
 function resetInputMemberEmail(){
 	$("#inputMemberEmail").val('false'); 
 }
-
 </script>
 </head>
 <body>
@@ -87,13 +87,11 @@ function resetInputMemberEmail(){
 			<form:form action="${root }member/join_proc" method="post" modelAttribute="joinMemberDTO" id="joinMemberDTO">
 				<form:hidden path="inputMemberID" />
 				<form:hidden path="inputMemberEmail" />
-			
 				<div class="form-group" >
 					<form:label path="member_name">이름</form:label>
 					<form:input path="member_name" class="form-control"/>
 					<form:errors path="member_name" style="color:red;" />
 				</div> 
-				
 				<%--아이디 입력 시작 --%>	
 				<div class="form-group" >
 					<form:label path="member_id">아이디</form:label>
@@ -106,7 +104,6 @@ function resetInputMemberEmail(){
 					<form:errors path="member_id" style="color:red;" />
 				</div>
 				<%--아이디 입력 끝 --%>	    
-				           
 				<div class="form-group">
 					<form:label path="member_pw">비밀번호</form:label>
 					<form:password path="member_pw" class="form-control" />
@@ -121,21 +118,20 @@ function resetInputMemberEmail(){
 					<form:label path="member_tel">연락처</form:label>
 					<form:input path="member_tel" class="form-control"/>
 				</div> 
-				
 				<%--이메일중복 --%>
 				<div class="form-group">
-				<form:label path="member_email">E-mail</form:label>
-				<div class="input-group">
-				<form:input type="email" path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
-					<div class="input-group-append">
-						<input type="button" class="btn btn-danger" onClick="checkEmail();" value="이메일 중복확인"/>
+					<form:label path="member_email">E-mail</form:label>
+					<div class="input-group">
+						<form:input type="email" path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
+						<div class="input-group-append">
+							<input type="button" class="btn btn-danger" onClick="checkEmail();" value="이메일 중복확인"/>
+						</div>
 					</div>
-				</div>
-				<form:errors path="member_email" style="color:red;"/>
+					<form:errors path="member_email" style="color:red;"/>
 				</div>
 				<%--주소입력 --%>
 				<div class="form-group">
-					<form:label path="member_address">주소</form:label>
+				<form:label path="member_address">주소</form:label>
 					<div class="input-group-append">
 						<input type="text" id="postcode" name="postcode" placeholder="우편번호" class="form-control">&nbsp;
 						<input type="button" class="btn btn-danger btn-sm" id="searchAdd" value="우편번호 찾기" >

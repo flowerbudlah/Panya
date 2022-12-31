@@ -109,6 +109,41 @@ function deleteBoardCallback(obj){
         }
     }
 }
+
+//5. 좋아요. 공감버튼
+function like(){
+	var product_idx = $("#product_idx").val();
+	var yn = confirm("이 상품을 추천하시겠습니까?");        
+	
+    if(yn){
+        
+        $.ajax({    
+         	url      : "${root}product/product_detail/like", , 
+            type     : "POST",    
+            data : { product_idx : product_idx },
+            dataType : "JSON",
+            success  : function(obj) {
+            	
+            	if(obj != null){        
+            		
+            		var result = obj.result;
+            		
+            		if(result == "SUCCESS"){
+            			location.reload();
+            			alert("추천하셨습니다. "); 
+            			return;
+            		} else {     
+            			alert("추천에 문제가생김");    
+            			return;
+            		}
+            	}
+            },           
+            error    : function(request, status, error) {
+            	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	
+            }
+         });
+    } //yn 끝  
+}//Like의 끝
 </script>
 </head>
 <style>
@@ -181,14 +216,17 @@ ul{list-style:none;}
 		</td>
 	</tr>
 </table>
+<br><br><br><br>
 <!-- 추천기능 -->
+<a href="${root }product/product_detail?product_idx=${product_idx}" onclick="javascript:like();">
+	<img src="${root }image/like.gif" width=100px;><br>이 상품을 <strong>추천</strong>하시겠습니까? 
+</a>
+<input type="hidden" id="product_idx" name="product_idx" value="${product_idx}"/> <!-- 게시글 번호 -->
 <br>
-<img src="${root }image/like.gif" width=100px; ><br>
-이 상품을 <strong>추천</strong>하시겠습니까? 
+<strong>★${productDetail.likeButton }★</strong>
 <!-- 1. 댓글과 대댓글 -->
-<div class="container" style="margin-top:50px; margin-bottom:100px;">
+<div class="container" style="margin-top:50px; margin-bottom:100px;"><br><br><br>
 <hr/>
-
 <!-- 1) 상품 댓글 목록 불러오기 -->
 <div class="reply">
 	<ul>

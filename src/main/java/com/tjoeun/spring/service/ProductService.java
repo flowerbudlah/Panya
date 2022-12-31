@@ -104,6 +104,26 @@ public class ProductService {
 	
 	
 	
+	//7. 좋아요 공감버튼 
+	public ProductDTO like(int product_idx) throws Exception {
+				
+		ProductDTO likeProductDTO = new ProductDTO();
+				
+		int like = productDAO.like(product_idx);
+				
+		if (like > 0) {
+			likeProductDTO.setResult("SUCCESS");
+		}else{
+			likeProductDTO.setResult("FAIL");
+		}
+		
+		return likeProductDTO;
+	}
+		
+		
+	
+	
+	
 	
 	
 
