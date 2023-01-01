@@ -17,7 +17,8 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 //이메일 중복체크하는 제이쿼리와 아작스
-function checkEmail(){
+function checkEmailInModify(){
+	
 	const member_email = $("#member_email").val()
 	if(member_email.length == 0){
 		alert('가입하실 Email를 입력해주세요!');
@@ -25,7 +26,7 @@ function checkEmail(){
 	}
     
     $.ajax({
-      url: '${root}member/checkEmail/'+member_email, 
+      url: '${root}member/checkEmailInModify/'+member_email, 
       type: 'get',
       dataType: 'text',
       success: 
@@ -34,17 +35,17 @@ function checkEmail(){
         	if(result.trim() == 'true'){
           		alert('사용하실 수 있습니다. ');
           		$('#inputMemberEmail').val('true');
-        	}else{
-          		alert('다른 Email을 이용해주세요.');  
-          		$('#inputMemberEmail').val('false');
-          }
-      	}
-    })
-  }
+        	}else{ //result.trim() == 'false'
+        		alert('다른 Email을 이용해주세요.');  
+              	$('#inputMemberEmail').val('false');
+        	}
+          } //function 끝
+      	})//아작스끝
+    }//펑션 끝
+ 
 function resetInputMemberEmail(){
 	$("#inputMemberEmail").val('false'); 
 }
-  
 </script>
 </head>
 <body>
@@ -70,26 +71,28 @@ function resetInputMemberEmail(){
 					</div>
 					<div class="form-group">
 						<form:label path="member_pw">비밀번호</form:label>
-						<form:password path="member_pw" class='form-control'/>
+						<form:password path="member_pw" value="${modifyMemberDTO.member_pw }" class='form-control'/>
 						<form:errors path='member_pw' style='color:red'/>
 					</div>
 					<div class="form-group">
-						<form:label path="member_pw2">비밀번호 확인</form:label>
-						<form:password path="member_pw2" class='form-control'/>
+						<form:label path="member_pw2">↑↑↑위 비밀번호 확인</form:label>
+						<form:password path="member_pw2" value="${modifyMemberDTO.member_pw }" class='form-control'/>
 						<form:errors path='member_pw2' style='color:red'/>
 					</div>
 					<%--이메일 --%>
+					
+					 ${loginMemberDTO.member_email }
 					<div class="form-group">
-						<form:label path="member_email">E-mail</form:label>
+						<form:label path="member_email">E-mail</form:label> 
 							<div class="input-group">
 								<form:input path="member_email" class="form-control" onkeypress="resetInputMemberEmail()"/>
 								<div class="input-group-append">
-									<button type="button" class="btn btn-warning" onClick="checkEmail();">이메일 중복확인</button>
+									<button type="button" class="btn btn-warning" onClick="checkEmailInModify();">이메일 중복확인</button>
 								</div>
 							</div>
 						<form:errors path="member_email" style="color:red;" />
 					</div>
-					<%--이메일 끝 --%>	
+					<%--이메일 끝 --%>
 					<div class="form-group">
 						<form:label path="member_tel">연락처</form:label>
 						<form:input path="member_tel" class='form-control'/>
@@ -113,7 +116,7 @@ function resetInputMemberEmail(){
 						</form:select>
 					</div>
 					<div class="form-group">
-						<form:label path="answer">위 질문에 대한 답</form:label>
+						<form:label path="answer">↑↑↑위 질문에 대한 답</form:label>
 						<form:input path="answer" class='form-control'/>
 					</div>
 					<div class="form-group">

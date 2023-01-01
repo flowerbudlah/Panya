@@ -3,8 +3,6 @@ package com.tjoeun.spring.dao;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-
 import com.tjoeun.spring.dto.MemberDTO;
 
 @Repository
@@ -15,8 +13,8 @@ public class MemberDAO {
 	
 	//1. 아이디 중복체크 
 	public String checkID(String member_id) {
-		String ckecking_id = sqlSessionTemplate.selectOne("member.checkID", member_id);
-		return ckecking_id;
+		String checking_id = sqlSessionTemplate.selectOne("member.checkID", member_id);
+		return checking_id;
 	}
 	
 	//2. 이메일 중복체크
@@ -25,42 +23,44 @@ public class MemberDAO {
 		return checking_email;
 	}
 	
+	//회원가입
 	public void addUserInfo(MemberDTO joinMemberDTO){
 		sqlSessionTemplate.insert("member.addMemberInfo", joinMemberDTO);
 	}
 	
+	
+	//로그인
 	public MemberDTO getLoginMemberDTO(MemberDTO tmpLoginMemberDTO) {
 		MemberDTO fromDBMemberDTO = sqlSessionTemplate.selectOne("member.getLoginMember", tmpLoginMemberDTO);
-			return fromDBMemberDTO;
+		return fromDBMemberDTO;
 	}
-	
 	
 	//수정하고자하는 회언정보를 가져오기
 	public MemberDTO getModifyMemberDTO(int member_idx) {                      
 		MemberDTO fromDBModifyMemberDTO = sqlSessionTemplate.selectOne("member.getModifyMemberDTO", member_idx);
-			return fromDBModifyMemberDTO;
-  	} 
+		return fromDBModifyMemberDTO;
+	} 
+	
 	//회원정보수정 버튼 누르기
 	public void modifyMemberInfo(MemberDTO modifyMemberDTO){
 		sqlSessionTemplate.update("member.modifyMemberInfo", modifyMemberDTO);
 	}
 	
-	//�쉶�썝�깉�눜 
+	//회원탈퇴
 	public void delete(MemberDTO deleteMemberDTO) throws Exception {
 		sqlSessionTemplate.delete("member.delete", deleteMemberDTO);
 	}
 	
-	//�븘�씠�뵒 李얘린
+	//아이디 찾기
 	public String find_id(String member_email) throws Exception{
 		return sqlSessionTemplate.selectOne("member.find_id", member_email);
 	}
 	
 	
-	//鍮꾨쾲李얘린 1�떒怨�: �븘�씠�뵒瑜� �꽔�뼱�꽌 吏덈Ц怨� �꽔���븘�씠�뵒 媛��졇�삤湲�  
 	public MemberDTO find_question(String member_id) throws Exception{
 		return sqlSessionTemplate.selectOne("member.find_question", member_id);
 	}
-	//鍮꾨쾲李얘린: 2�떒怨�: �떟怨� �븘�씠�뵒(鍮꾧났媛�)瑜� �엯�젰�빐�꽌 鍮꾨쾲李얘린  
+	
 	public MemberDTO find_password(MemberDTO answerAndId){
 		return sqlSessionTemplate.selectOne("member.find_password", answerAndId);
 	}

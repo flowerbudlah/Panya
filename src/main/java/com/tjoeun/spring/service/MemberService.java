@@ -18,14 +18,13 @@ public class MemberService {
 	@Autowired
 	private MemberDAO memberDAO;
 	
-	@Resource(name = "loginMemberDTO")
 	@Lazy
+	@Resource(name = "loginMemberDTO")
 	private MemberDTO loginMemberDTO;	
 	
 	//1. 아이디 중복체크
 	public boolean checkID(String member_id) {
 		String checking_id = memberDAO.checkID(member_id); 
-
 		if(checking_id == null) {	
 			return true; //입력한 아이디가 존재하지 않기에 입력한 아이디 사용가능. 
 		} else {	
@@ -33,14 +32,34 @@ public class MemberService {
 		}
 	}
 	
-	
-	//2. 이메일 중복체크 
+	//2. 이메일 중복체크 (회원가입시) 
 	public boolean checkEmail(String member_email) {
 		String checking_email = memberDAO.checkEmail(member_email); 
 		if(checking_email == null) {	
 			return true; //입력한 아이디가 존재하지 않기에 입력한 아이디 사용가능. 
-		} else {	
+		} else {
 			return false; //입력한 아이디 이미 존재하기에 사용불가
+		}
+	}
+	
+	//2-1. 이메일 중복체크(회원정보수정시)
+	public boolean checkEmailInModify(String member_email) {
+		System.out.println("====================================================================="); 
+		System.out.println("member_email: "+member_email); 
+		System.out.println("loginMemberDTO.getMember_email(): " +loginMemberDTO.getMember_email());
+	
+		String checking_email = memberDAO.checkEmail(member_email); 
+		System.out.println("checking_email: "+checking_email); 
+		System.out.print(loginMemberDTO.getMember_email().equalsIgnoreCase(checking_email) ); //같으면 true, 다르면 false
+	
+		if(checking_email == null ) {	
+			return true; //입력한 아이디가 존재하지 않기에 입력한 아이디 사용가능. 
+		} else {  //checking_email != null
+			if(checking_email.equalsIgnoreCase(loginMemberDTO.getMember_email())){
+				return true;
+			} else {
+				return false; //입력한 아이디 이미 존재하기에 사용불가
+			}
 		}
 	}
 	
@@ -50,6 +69,7 @@ public class MemberService {
 		memberDAO.addUserInfo(joinMemberDTO);
 	}
  
+	//로그인
 	public void getLoginMemberDTO(MemberDTO tmpLoginMemberDTO) {
 		MemberDTO fromDBMemberDTO = memberDAO.getLoginMemberDTO(tmpLoginMemberDTO);
 		
@@ -58,11 +78,13 @@ public class MemberService {
 			loginMemberDTO.setMember_name(fromDBMemberDTO.getMember_name());
 			loginMemberDTO.setMember_id(fromDBMemberDTO.getMember_id());
 			loginMemberDTO.setMember_pw(fromDBMemberDTO.getMember_pw());
+			loginMemberDTO.setMember_email(fromDBMemberDTO.getMember_email());
 	
 			loginMemberDTO.setMemberLogin(true);
 		}
 	}
 	
+	//회원정보를 수정할 대상 회원정보 가져오기. 
 	public void getModifyMemberDTO(MemberDTO modifyMemberDTO) {
 		MemberDTO fromDBModifyMemberDTO = memberDAO.getModifyMemberDTO(loginMemberDTO.getMember_idx());
   	
