@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="member">
+  
+	<!-- 아이디 중복체크 -->
+	<select id="checkID" resultType="java.lang.String" parameterType = "java.lang.String">
+	<![CDATA[select member_id from panya_member_table where member_id = #{member_id}]]>
+	</select>
+  	 
+	<!-- 이메일 중복 -->
+	<select id="checkEmail" resultType="java.lang.String" parameterType="java.lang.String">
+	<![CDATA[select member_email from panya_member_table where member_email like '%'||#{member_email}||'%']]>
+	</select>
+  	  
+	<!-- 회원가입 -->
+	<insert id="addMemberInfo" parameterType="com.tjoeun.spring.dto.MemberDTO">
+    <![CDATA[INSERT INTO PANYA_MEMBER_TABLE VALUES(PANYA_MEMBER_SEQ.NEXTVAL, #{member_name}, #{member_id}, #{member_pw}, #{member_email}, #{member_tel}, #{member_address}, #{postcode}, #{question}, #{answer}, sysdate)]]>
+  	</insert>
+  	
+	<!-- 로그인 -->
+ 	<select id="getLoginMember" parameterType="com.tjoeun.spring.dto.MemberDTO" resultType="com.tjoeun.spring.dto.MemberDTO">
+    <![CDATA[
+    select * 
+    from panya_member_table 
+    where member_id = #{member_id} and member_pw = #{member_pw}
+    ]]>
+	</select>
+  
+	<!-- 회원정보수정하기 위해서 정보수정 전 정보 가져오기 -->
+  	<select id="getModifyMemberDTO" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.MemberDTO" >
+    <![CDATA[SELECT * FROM PANYA_MEMBER_TABLE WHERE MEMBER_IDX = #{member_idx}]]>
+    </select>
+  
+	<!-- 회원정보수정하기 -->
+	<update id="modifyMemberInfo" parameterType="com.tjoeun.spring.dto.MemberDTO" >
+	<![CDATA[
+      UPDATE PANYA_MEMBER_TABLE
+      
+      SET MEMBER_PW=#{member_pw, jdbcType=VARCHAR}, 
+      	  MEMBER_EMAIL=#{member_email, jdbcType=VARCHAR}, 
+      	  MEMBER_TEL=#{member_tel, jdbcType=VARCHAR}, 
+      	  MEMBER_ADDRESS=#{member_address, jdbcType=VARCHAR}, 
+      	  QUESTION=#{question, jdbcType=VARCHAR}, 
+      	  ANSWER=#{answer, jdbcType=VARCHAR}, 
+      	  postcode=#{postcode}
+      	  
+      WHERE MEMBER_IDX=#{member_idx}
+     ]]>     
+   </update>
+   
+	<!-- 회원탈퇴 기능 -->
+	<delete id="delete" parameterType="com.tjoeun.spring.dto.MemberDTO">
+ 	<![CDATA[DELETE FROM PANYA_MEMBER_TABLE WHERE MEMBER_ID = #{member_id} and MEMBER_PW = #{member_pw} ]]>     
+	</delete>
+	
+	<!--잃어버린 아이디를 찾는 기능 -->
+	<select id="find_id" parameterType="java.lang.String" resultType="java.lang.String">
+	<![CDATA[select member_id from panya_member_table where member_email = #{member_email}]]>  
+	</select>
+	
+	<!-- 비번찾는단계 -->
+	<!-- 1. 회원가입시 입력한 질문을 얻기 -->
+	<select id="find_question" parameterType="java.lang.String" resultType="com.tjoeun.spring.dto.MemberDTO">
+	<![CDATA[select member_id, question from PANYA_MEMBER_TABLE where MEMBER_ID = #{member_id}]]>  
+	</select>
+	
+	<!-- 2. 회원가입시 입력한 답을 제출하여 비번찾기(로그인과 형태유사? ) -->
+	<select id="find_password" parameterType="com.tjoeun.spring.dto.MemberDTO" resultType="com.tjoeun.spring.dto.MemberDTO">
+	<![CDATA[select * from PANYA_MEMBER_TABLE where answer = #{answer} and member_id = #{member_id}]]>  
+	</select>
+	
+</mapper>

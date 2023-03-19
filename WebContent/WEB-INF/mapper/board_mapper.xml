@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="board">
+
+ <!-- 게시판 글 목록 가져오기(댓글 달린수 제목 옆에 붙이기) -->
+  <select id="getPostList" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.PostDTO">
+   <![CDATA[
+      SELECT P.POST_BOARD_IDX, P.POST_IDX, P.POST_SUBJECT, M.MEMBER_NAME POST_WRITER_NAME, 
+      		TO_CHAR(P.POST_DATE, 'YYYY-MM-DD') POST_DATE, P.POST_READ_COUNT, 
+      		(SELECT COUNT(*) FROM reply_table WHERE post_idx = p.post_idx) AS REPLY_CNT, P.POST_FILE
+      FROM POST_TABLE P, PANYA_MEMBER_TABLE M
+      WHERE P.POST_WRITER_IDX = M.MEMBER_IDX AND P.POST_BOARD_IDX = #{board_idx} 
+      ORDER BY P.POST_IDX DESC ]]>
+   </select>
+
+
+	<!-- 글쓰기 -->
+	<insert id="addPostInfo" parameterType="com.tjoeun.spring.dto.PostDTO"   >
+  	<selectKey keyProperty="post_idx" order="BEFORE" resultType="java.lang.Integer">
+      SELECT POST_SEQ.NEXTVAL FROM DUAL
+    </selectKey>
+    <![CDATA[
+      INSERT INTO POST_TABLE(POST_IDX, POST_SUBJECT, POST_TEXT, POST_FILE, POST_WRITER_IDX, POST_BOARD_IDX, POST_DATE, POST_READ_COUNT)
+      VALUES(#{post_idx}, #{post_subject}, #{post_text}, #{post_file, jdbcType=VARCHAR}, #{post_writer_idx}, #{post_board_idx}, SYSDATE, #{post_read_count})
+     ]]>
+  </insert>
+  
+  
+	<!--게시판 이름가져오기 -->
+	<select id="getBoardName" parameterType="java.lang.Integer" resultType="java.lang.String" >
+		<![CDATA[SELECT BOARD_NAME FROM BOARD_TABLE WHERE BOARD_IDX=#{board_idx}]]> 
+	</select>
+   
+   
+   <!-- 글 하나 읽기 -->
+   <select id="getPostInfo" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.PostDTO" >
+     <![CDATA[
+     SELECT P.POST_BOARD_IDX, P.POST_IDX, M.MEMBER_NAME POST_WRITER_NAME, TO_CHAR(P.POST_DATE, 'YYYY-MM-DD HH24:MI:SS') POST_DATE, P.POST_SUBJECT, P.POST_TEXT,
+     		P.POST_FILE, P.POST_WRITER_IDX, P.POST_READ_COUNT
+     FROM POST_TABLE P, PANYA_MEMBER_TABLE M
+     WHERE P.POST_WRITER_IDX = M.MEMBER_IDX AND P.POST_IDX = #{post_idx}
+     ]]>
+   </select>
+   
+   
+   <!-- 글 수정하기 -->
+   <update id="modifyPostInfo" parameterType="com.tjoeun.spring.dto.PostDTO">
+     <![CDATA[
+       UPDATE POST_TABLE 
+       SET POST_SUBJECT=#{post_subject}, POST_TEXT=#{post_text}, POST_FILE=#{post_file, jdbcType=VARCHAR}
+       WHERE POST_IDX=#{post_idx}
+     ]]>
+   </update>
+   
+   
+   <!-- 전체 게시글 수 가져오기 -->
+   <select id="getPostCnt" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     <![CDATA[
+       SELECT COUNT(*) FROM POST_TABLE WHERE POST_BOARD_IDX = #{post_board_idx}
+     ]]>
+   </select>
+   
+   
+	<!-- 게시글 삭제 -->
+	<delete id="delete" parameterType="java.lang.Integer">
+		<![CDATA[delete from POST_TABLE where POST_IDX = #{post_idx} ]]>
+	</delete>
+	
+
+	<!-- 댓글 삭제-->
+	<delete id="replyDelete" parameterType="java.lang.Integer">
+		<![CDATA[delete from reply_table where POST_IDX = #{post_idx} ]]>
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="viewCount" parameterType="java.lang.Integer">
+	  <![CDATA[
+		UPDATE POST_TABLE 
+		SET post_read_count = post_read_count + 1 
+		WHERE post_idx = #{post_idx}
+		]]>
+	</update>
+	
+	
+	<!-- 게시글 검색 -->
+	<select id="selectSearchList" parameterType="com.tjoeun.spring.dto.PostDTO" resultType="com.tjoeun.spring.dto.PostDTO">
+	 <![CDATA[
+		SELECT P.POST_BOARD_IDX, P.POST_IDX, P.POST_SUBJECT, P.POST_TEXT, M.MEMBER_NAME POST_WRITER_NAME, TO_CHAR(P.POST_DATE, 'YYYY-MM-DD') POST_DATE, P.POST_READ_COUNT, 
+				(SELECT COUNT(*) FROM reply_table WHERE post_idx = p.post_idx) AS REPLY_CNT
+		FROM POST_TABLE P, PANYA_MEMBER_TABLE M
+		WHERE P.POST_WRITER_IDX = M.MEMBER_IDX 
+		AND P.POST_BOARD_IDX = #{post_board_idx} 
+	]]>
+		<choose>
+			<when test="type!=null and type.equals('post_subject')">
+			 <![CDATA[	and p.post_subject like '%'||#{keyword}||'%'	]]>
+			</when>
+			<when test="type!=null and type.equals('post_text')">
+			 <![CDATA[	and p.post_text like '%'||#{keyword}||'%'	]]>
+			</when>
+			<when test="type!=null and type.equals('member_name')">
+			 <![CDATA[	and member_name like '%'||#{keyword}||'%'	]]>
+			</when>
+		</choose>
+	<![CDATA[ORDER BY P.POST_IDX DESC ]]>
+	</select>
+	
+	
+	<!-- 검색한 게시물 수 -->
+	<select id="searchResultCount" parameterType="com.tjoeun.spring.dto.PostDTO" resultType="java.lang.Integer">
+	 <![CDATA[
+		SELECT COUNT(*)
+		FROM POST_TABLE P, PANYA_MEMBER_TABLE M
+		WHERE P.POST_WRITER_IDX = M.MEMBER_IDX 
+		AND P.POST_BOARD_IDX = #{post_board_idx} 
+	]]>
+		<choose>
+			<when test="type!=null and type.equals('post_subject')">
+				<![CDATA[	and p.post_subject like '%'||#{keyword}||'%'	]]>
+			</when>
+			<when test="type!=null and type.equals('post_text')">
+				<![CDATA[	and p.post_text like '%'||#{keyword}||'%'	]]>
+			</when>
+			<when test="type!=null and type.equals('member_name')">
+				<![CDATA[	and member_name like '%'||#{keyword}||'%'	]]>
+			</when>
+		</choose>
+	</select>
+	
+		
+</mapper>  

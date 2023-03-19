@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cart">
+	<!-- 장바구니에 있는 물건 검사(이미 장바구니에 똑같은 물건이 실려있다면) -->
+	<select id="findCartGoods" parameterType="com.tjoeun.spring.dto.CartDTO" resultType="java.lang.String">
+	<![CDATA[ 
+		select decode(count(*), 0, 'false', 'true') 
+		from CART_TABLE
+		where product_idx = #{product_idx} and member_id = #{member_id} 
+	 ]]>
+	</select>
+
+	<!-- 장바구니에 넣기 -->
+	<insert id="addGoodsInCart" parameterType="com.tjoeun.spring.dto.CartDTO" >
+	<![CDATA[ 
+		insert into cart_table
+		values(cart_seq.nextval, #{member_id}, #{product_idx}, #{amount}, SYSDATE)
+	 ]]>
+	</insert>
+
+	<!--내 장바구니 목록 -->
+	<select id="getMyCart" resultType="com.tjoeun.spring.dto.CartDTO">
+	<![CDATA[ 
+		select 
+			c.cart_idx AS cart_idx,
+			c.member_id AS member_id,
+			p.product_idx AS product_idx,
+			m.member_name AS member_name,
+			p.product_name AS product_name,
+			c.amount AS amount,
+			p.product_img product_img,
+			p.product_price AS price,
+			p.product_price * c.amount totalPrice, 
+			c.regdate AS regdate
+		from 
+			panya_member_table m, product_table p, cart_table c
+		where 
+			m.member_id = c.member_id
+		AND p.product_idx = c.product_idx 
+		AND c.member_id = #{member_id}
+		ORDER BY  
+			c.cart_idx
+	]]>
+	</select>
+	
+	<!-- 장바구니안에있는 목록 하나 삭제(삭제하기) -->
+	<delete id="delete" parameterType="java.lang.Integer">
+		<![CDATA[delete from cart_table where cart_idx = #{cart_idx} ]]>
+	</delete>
+	
+	<!-- 내 장바구니 안에 실려있는 물품의 가격합계 -->
+	<select id="sum" parameterType="java.lang.String" resultType="java.lang.Integer">
+		<![CDATA[
+			select NVL(sum(p.product_price * c.amount),0) paymentPrice
+			from product_table p, cart_table c
+			where p.product_idx = c.product_idx 
+			AND c.member_id = #{member_id}
+		]]>
+	</select>
+
+	<!-- 장바구니 안에있는 수량을 변경할 경우 총액변경 -->
+	<update id="updateAmount" parameterType="com.tjoeun.spring.dto.CartDTO">
+		<![CDATA[UPDATE cart_table SET amount=#{amount} WHERE cart_idx=#{cart_idx}]]>
+	</update>
+
+
+
+	<!-- 주문정보 -->
+	<insert id="orderInfo" parameterType="com.tjoeun.spring.dto.OrderDTO">
+    	<![CDATA[
+    	INSERT INTO order_table VALUES(#{order_idx}, #{member_id}, #{paymentprice}, #{sender_name}, #{sender_address}, #{sender_postcode}, #{sender_tel}, #{recipient_name}, #{recipient_address}, #{recipient_postcode}, #{recipient_tel}, sysdate, #{memo, jdbcType=VARCHAR}, #{payment_method}, #{circumstance})
+    	]]>
+  	</insert>
+  	
+	<!-- 주문 상세 정보 --> 
+	<insert id="orderInfo_Details" parameterType="com.tjoeun.spring.dto.OrderDetailDTO">
+		<![CDATA[
+		insert into order_detail_table(order_detail_idx, order_idx, product_idx, amount)
+		select order_detail_seq.nextval, #{order_idx}, product_idx, amount
+		from cart_table
+		where member_id = #{member_id}
+		]]>
+	</insert> 
+	
+	
+	<!-- 카트 비우기 -->
+	<delete id="emptyMyCart" parameterType="java.lang.String">
+		<![CDATA[delete from cart_table where member_id = #{member_id}]]>
+	</delete>
+	
+	<!-- 특정 회원의 결제목록 -->
+	<select id="orderPaymentList" parameterType="java.lang.String" resultType="com.tjoeun.spring.dto.OrderDTO">
+	<![CDATA[
+		select *
+		from order_table
+		where member_id = #{member_id}
+ 	]]>
+	</select>
+	
+	<!-- 상품테이블, 결제테이블, 결제상품상세보기 테이블 합쳐서 -->
+	<select id="allInformationAboutOrder" parameterType="java.lang.String" resultType="com.tjoeun.spring.dto.OrderListDTO">
+	<![CDATA[
+select o.order_idx, o.paymentprice, o.member_id, o.sender_name, o.sender_address, o.sender_postcode, o.sender_tel, o.recipient_name, o.recipient_address, o.recipient_postcode, o.recipient_tel, o.order_date, o.memo, o.payment_method, d.order_detail_idx, d.amount, g.product_name, g.product_price, g.product_img
+from order_table o inner join order_detail_table d on o.order_idx = d.order_idx inner join product_table g on d.product_idx = g.product_idx
+where o.order_idx=#{order_idx}
+	]]>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+</mapper>

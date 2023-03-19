@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="admin">
+	<!-- 가입한 모든 회원 목록 -->
+	<select id="getAllMember" resultType="com.tjoeun.spring.dto.MemberDTO">
+		<![CDATA[select * from panya_member_table order by member_idx]]>
+   	</select>
+   	
+   	<!--결제내역 -->
+   	<select id="getAllPayment" resultType="com.tjoeun.spring.dto.OrderDTO">
+		<![CDATA[select * from order_table ]]>
+   	</select>
+	
+	<!-- 배송상황 변경하기 -->
+	<update id="changeDeliveryCircumstance" parameterType="com.tjoeun.spring.dto.OrderDTO">
+		<![CDATA[
+			UPDATE order_table
+			SET circumstance=#{circumstance} 
+			WHERE order_idx=#{order_idx}
+		]]>
+	</update>
+	
+	
+	
+	<!-- 회원검색 -->
+	<select id="resultSearchingMember" parameterType="com.tjoeun.spring.dto.MemberDTO" resultType="com.tjoeun.spring.dto.MemberDTO">
+	 <![CDATA[
+		SELECT *
+		FROM PANYA_MEMBER_TABLE 
+		WHERE 
+	]]>
+		<choose>
+			<when test="type!=null and type.equals('member_name')">
+			 <![CDATA[member_name like '%'||#{keyword}||'%'	]]>
+			</when>
+			<when test="type!=null and type.equals('member_id')">
+			 <![CDATA[member_id like '%'||#{keyword}||'%']]>
+			</when>
+		</choose>
+	</select>
+	
+	
+	<!-- 결과수 -->
+	<select id="numberOfResultSearchingMember" parameterType="com.tjoeun.spring.dto.MemberDTO" resultType="java.lang.Integer">
+	<![CDATA[
+		SELECT COUNT(*)
+		FROM PANYA_MEMBER_TABLE 
+		WHERE 
+	]]>
+		<choose>
+			<when test="type!=null and type.equals('member_name')">
+			 <![CDATA[member_name like '%'||#{keyword}||'%'	]]>
+			</when>
+			<when test="type!=null and type.equals('member_id')">
+			 <![CDATA[member_id like '%'||#{keyword}||'%']]>
+			</when>
+		</choose>
+		
+	</select>
+
+</mapper>

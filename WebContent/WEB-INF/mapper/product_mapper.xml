@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="product">
+
+	<!-- 카테고리별로 상품을 전시한다.(게시판 전체부분) -->
+	<select id="getProductListByCategory" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.ProductDTO" >
+		<![CDATA[ SELECT * FROM PRODUCT_TABLE WHERE CATEGORY_IDX = #{category_idx, jdbcType=VARCHAR} ]]>
+	</select>
+
+	<!-- 상품상세정보본다.(글 하나 읽기) -->
+	<select id="getProductDetail" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.ProductDTO" >
+		<![CDATA[ SELECT * FROM PRODUCT_TABLE WHERE PRODUCT_IDX = #{product_idx, jdbcType=VARCHAR}]]>
+	</select>
+
+	<!-- 상품등록(글쓰기) -->
+	<insert id="addProduct" parameterType="com.tjoeun.spring.dto.ProductDTO" >
+	<![CDATA[
+      INSERT INTO PRODUCT_TABLE(product_idx, product_name, product_price, category_idx, storage_method, expiration_date, product_img)
+      VALUES(PRODUCT_SEQ.NEXTVAL, #{product_name}, #{product_price}, #{category_idx}, #{storage_method}, #{expiration_date}, #{product_img})
+     ]]>
+     </insert>
+
+
+	<!-- 상품수정 -->
+	<update id="modify" parameterType="com.tjoeun.spring.dto.ProductDTO">
+     <![CDATA[
+     	UPDATE PRODUCT_TABLE 
+     	SET category_idx = #{category_idx}, PRODUCT_NAME = #{product_name}, PRODUCT_PRICE=#{product_price}, 
+			storage_method=#{storage_method}, expiration_date=#{expiration_date}, product_img=#{product_img, jdbcType=VARCHAR}
+		WHERE PRODUCT_IDX = #{product_idx}
+     ]]>
+   </update>
+	
+
+	<!-- 상품삭제 -->
+	<delete id="delete" parameterType="java.lang.Integer">
+    	<![CDATA[delete from product_table where product_idx = #{product_idx} ]]>
+	</delete>
+	
+	
+	<!-- 상품추천(좋아요기능) -->
+	<update id="like" parameterType="java.lang.Integer">
+		<![CDATA[update product_table set likeButton = likeButton + 1 where product = #{product_idx}]]>
+	</update>
+	
+
+	<!-- 1.댓글 -->
+	<!-- 1) 댓글 목록 가져오기 -->
+	<select id="replyList" parameterType="java.lang.Integer" resultType="com.tjoeun.spring.dto.ProductReplyDTO">
+	 <![CDATA[
+		select product_idx, product_reply_idx, product_replyer_id, p.member_name as product_replyer_name, product_reply_content, regdate
+		from product_reply_table r, panya_member_table p
+        where product_idx = #{product_idx} and r.product_replyer_id = p.member_id 
+	]]>
+	</select>
+
+	<!-- 2) 댓글 작성 -->
+	<insert id="replyWrite" parameterType="com.tjoeun.spring.dto.ProductReplyDTO">
+	 <![CDATA[
+		insert into product_reply_table(product_reply_idx, product_idx, product_replyer_id, product_reply_content, regdate)
+		values(product_reply_seq.nextval, #{product_idx}, #{product_replyer_id}, #{product_reply_content, jdbcType=VARCHAR}, sysdate)
+        ]]>
+	</insert>
+   
+   
+	<!-- 3) 댓글 삭제 (아작스)-->
+	<delete id="deleteProductReply" parameterType="java.lang.Integer">
+		<![CDATA[delete from product_reply_table where product_reply_idx = #{product_reply_idx} ]]>
+	</delete>
+	
+	
+	
+	
+	
+
+</mapper>
