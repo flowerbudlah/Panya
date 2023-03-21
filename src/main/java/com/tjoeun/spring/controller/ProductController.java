@@ -24,7 +24,7 @@ import com.tjoeun.spring.dto.ProductReplyDTO;
 import com.tjoeun.spring.service.ProductService;
 
 
-//?ƒ?’ˆê²Œì‹œ?Œ ?—­?•  
+//?ï¿½ï¿½?ï¿½ï¿½ê²Œì‹œ?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -32,7 +32,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-	//1. ? „ì²? ?ƒ?’ˆ ë¦¬ìŠ¤?Š¸ 
+	//1. ?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ ë¦¬ìŠ¤?ï¿½ï¿½ 
 	@GetMapping("/product_by_category")
 	public String product_by_category(@RequestParam("category_idx") int category_idx, Model model) {
 		model.addAttribute("category_idx", category_idx); 
@@ -43,7 +43,7 @@ public class ProductController {
 		return "product/product_by_category";
 	}
 	
-	//2. ?ƒ?’ˆ?„ ?ƒ?„¸?ˆ ë³´ê¸°(ê²Œì‹œê¸? ?½ê¸?)
+	//2. ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ë³´ê¸°(ê²Œì‹œï¿½? ?ï¿½ï¿½ï¿½?)
 	@GetMapping("/product_detail")
 	public String product_detail(@RequestParam("product_idx") int product_idx, Model model) {
 		
@@ -52,14 +52,14 @@ public class ProductController {
 		ProductDTO productDetail = productService.getProductDetail(product_idx);
 		model.addAttribute("productDetail", productDetail);	
 		
-		//1). ?•´?‹¹ ?ƒ?’ˆ?— ?“±ë¡ëœ ?Œ“ê¸? ì¶œë ¥
+		//1). ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ë¡ëœ ?ï¿½ï¿½ï¿½? ì¶œë ¥
 		List<ProductReplyDTO> productReply = productService.replyList(product_idx);
 		model.addAttribute("productReply", productReply);
 		
 		return "product/product_detail";
 	}
 	
-	//3. ?ƒ?’ˆ?‚­? œ
+	//3. ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
 	@GetMapping("/delete")
 	public String delete(int product_idx, @RequestParam("category_idx") int category_idx, Model model) {
 		
@@ -68,7 +68,7 @@ public class ProductController {
 		return "redirect:/product/product_by_category?category_idx={category_idx}";
 	}
 	
-	//4-1. ?ƒ?’ˆ?„ ?“±ë¡í•˜?Š” ê·? ?˜?´ì§?ë¡? ê°?ê¸?(ê¸??“°ê¸? ?˜?´ì§? Create)
+	//4-1. ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ë¡í•˜?ï¿½ï¿½ ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½? ï¿½?ï¿½?(ï¿½??ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ï¿½? Create)
 	@GetMapping("/upload")
 	public String upload(
 	@ModelAttribute("newProductDTO") ProductDTO newProductDTO) {
@@ -76,7 +76,7 @@ public class ProductController {
 		return "product/upload"; 
 	}
 	
-	//4-2. ?ƒ?’ˆ ?‹¤? œ ?“±ë¡?(?‚¬ì§„ë„ ?“±ë¡í•˜ê¸?)
+	//4-2. ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ï¿½?(?ï¿½ï¿½ì§„ë„ ?ï¿½ï¿½ë¡í•˜ï¿½?)
 	@PostMapping("/upload_proc")
 	public String addProduct(@Valid @ModelAttribute("newProductDTO") ProductDTO newProductDTO, BindingResult result, MultipartFile product_image_file){
 		
@@ -88,16 +88,16 @@ public class ProductController {
 		return "redirect:/product/product_by_category?category_idx="+newProductDTO.getCategory_idx(); 
 	}
 	
-	//5-1. ?ˆ˜? •?•˜ê¸?
+	//5-1. ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½?
 	@GetMapping("/modify")
 	public String modify(@RequestParam("category_idx") int category_idx, @RequestParam("product_idx") int product_idx, @ModelAttribute("modifyProductDTO") ProductDTO modifyProductDTO, Model model) {
 		
 		model.addAttribute("category_idx", category_idx);
 		model.addAttribute("product_idx", product_idx);
 
-		ProductDTO fromDBProductDTO = productService.getProductDetail(product_idx); //?ˆ˜? •?•˜? ¤?Š” ?ƒ?’ˆ? •ë³?
+		ProductDTO fromDBProductDTO = productService.getProductDetail(product_idx); //?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½?
 		
-		//?ˆ˜? •?•˜?Š” ê·? ê³¼ì •
+		//?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ï¿½? ê³¼ì •
 		modifyProductDTO.setProduct_name(fromDBProductDTO.getProduct_name()); 
 		modifyProductDTO.setProduct_price(fromDBProductDTO.getProduct_price());
 		modifyProductDTO.setStorage_method(fromDBProductDTO.getStorage_method());
@@ -105,10 +105,10 @@ public class ProductController {
 		modifyProductDTO.setProduct_img(fromDBProductDTO.getProduct_img());
 		modifyProductDTO.setCategory_idx(category_idx);
 
-			return "product/modify";
+		return "product/modify";
 	}
 	
-	//5-2. ?ˆ˜? •?•˜ë©´ì„œ 
+	//5-2. ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë©´ì„œ 
 	@PostMapping("/modify_proc")
 	public String modifyProc
 	(@Valid @ModelAttribute("modifyProductDTO") ProductDTO modifyProductDTO, BindingResult result, Model model) {
@@ -122,9 +122,9 @@ public class ProductController {
 	}
 	
 	
-	//6. ?ƒ?’ˆ?ƒ?„¸ ?˜?´ì§??— ?“±ë¡í•˜?Š” ?Œ“ê¸?
+	//6. ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿½??ï¿½ï¿½ ?ï¿½ï¿½ë¡í•˜?ï¿½ï¿½ ?ï¿½ï¿½ï¿½?
 	
-	//1) ?ƒ?’ˆ ?Œ“ê¸? ?‘?„± 
+	//1) ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ 
 	@PostMapping("/product_detail/write")
 	public String write(ProductReplyDTO writeProductReplyDTO, @RequestParam("product_idx") int product_idx, Model model) throws Exception {
 		
@@ -135,7 +135,7 @@ public class ProductController {
 	}
 
 	
-	//2) ?ƒ?’ˆ ?Œ“ê¸? ?‚­? œ(?•„?‘?Š¤ ?´?š©)
+	//2) ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½(?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½)
 	@RequestMapping("/product_detail/deleteProductReply")
     public @ResponseBody ProductReplyDTO deleteProductReply
     (HttpServletRequest request, HttpServletResponse response, int product_reply_idx) throws Exception{
@@ -146,7 +146,7 @@ public class ProductController {
 	
 	
 	
-	//6. ì¢‹ì•„?š”(ì¶”ì²œ, ê³µê°)
+	//6. ì¢‹ì•„ìš”(ì¶”ì²œ, ê³µê°)
 	@RequestMapping("/product_detail/like") 
 	public @ResponseBody ProductDTO like(HttpServletRequest request, HttpServletResponse response, int product_idx) throws Exception {
 		ProductDTO likeProductDTO = productService.like(product_idx);

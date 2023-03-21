@@ -41,7 +41,11 @@
 	
 	<!-- 상품추천(좋아요기능) -->
 	<update id="like" parameterType="java.lang.Integer">
-		<![CDATA[update product_table set likeButton = likeButton + 1 where product = #{product_idx}]]>
+		<![CDATA[
+		update product_table 
+		set likeButton = likeButton + 1 
+		where product_idx = #{product_idx}
+		]]>
 	</update>
 	
 
